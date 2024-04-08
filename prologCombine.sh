@@ -16,4 +16,4 @@ for file in *.pl; do
     fi 
 done
 
-swipl combine.pl
+swipl $exportName
