@@ -1,5 +1,40 @@
 :- [renderer].
 
+:- dynamic(i_am_at/1).
+
+path(friendGroup, forwards, middleOfTheTram).
+path(friendGroup, backwards, endOfTheTram).
+
+path(middleOfTheTram, forwards, tramDriver).
+path(middleOfTheTram, backwards, friendGroup).
+
+path(endOfTheTram, forwards, friendGroup).
+
+path(tramDriver, backwards, middleOfTheTram).
+
+path(outsideOfTheTram, forwards, firstIntersection).
+
+path(firstIntersection, forwards, secondIntersection).
+path(firstIntersection, left, lost).
+path(firstIntersection, right, lost).
+path(firstIntersection, backwards, outsideOfTheTram).
+
+path(secondIntersection, forwards, thirdIntersection).
+path(secondIntersection, right, lost).
+
+path(thirdIntersection, forwards, fourthIntersection).
+path(thirdIntersection, left, lost).
+
+path(fourthIntersection, left, fifthIntersection).
+path(fourthIntersection, right, lost).
+
+path(fifthIntersection, left, mainStation).
+path(fifthIntersection, right, lost).
+
+options(friendGroup, [talk, spit]).
+
+i_am_at(friendGroup).
+
 start :-
     initRenderer,
 
@@ -22,3 +57,37 @@ update(Object, R) :-
     NewR is R + 5,
     sleep(0.33),
     update(Object, NewR).
+
+w :- go(forwards).
+s :- go(backwards).
+a :- go(left).
+d :- go(right).
+
+go(Direction) :- 
+    i_am_at(Location),
+    path(Location, Direction, NewLocation),
+    retract(i_am_at(Location)),
+    assert(i_am_at(NewLocation)), !,
+    look.
+
+go(_) :-
+    write('You can\'t go that way!').
+
+look :-
+    i_am_at(Location),
+    look(Location),!.
+
+look(Location) :-
+    describe(Location), nl,
+    (options(Location, [_|_]),
+    write('Options:'), nl,
+    options(Location, Options),
+    print_list(Options));!.
+
+describe(X) :-
+    format('Place: ~w', X).
+
+print_list([]).
+print_list([Head | Tail]) :-
+    format('-> ~w', Head), nl,
+    print_list(Tail).
