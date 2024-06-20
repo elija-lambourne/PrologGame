@@ -73,11 +73,21 @@ go(Direction) :-
 go(_) :-
     write('You can\'t go that way!').
 
+talk :- do(talk),!.
+
+do(talk) :-
+    i_am_at(friendGroup),
+    write('Oga Oga').
+
+do(_) :-
+    write('You can\'t do that here!').
+
 look :-
     i_am_at(Location),
     look(Location),!.
 
 look(Location) :-
+    i_am_at(Location),
     describe(Location), nl,
     (options(Location, [_|_]),
     write('Options:'), nl,
