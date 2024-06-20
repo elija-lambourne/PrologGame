@@ -1,6 +1,14 @@
 :- [renderer].
 
 :- dynamic(i_am_at/1).
+:- dynamic(inventory/1).
+:- dynamic(options/2).
+
+inventory([]).
+
+options(friendGroup, [talk, spit]).
+
+i_am_at(friendGroup).
 
 path(friendGroup, forwards, middleOfTheTram).
 path(friendGroup, backwards, endOfTheTram).
@@ -30,10 +38,6 @@ path(fourthIntersection, right, lost).
 
 path(fifthIntersection, left, mainStation).
 path(fifthIntersection, right, lost).
-
-options(friendGroup, [talk, spit]).
-
-i_am_at(friendGroup).
 
 start :-
     initRenderer,
@@ -74,6 +78,14 @@ go(_) :-
     write('You can\'t go that way!').
 
 talk :- do(talk),!.
+spit :- do(spit),!.
+
+do(spit) :-
+    i_am_at(friendGroup),
+    option_doable(spit),
+    write('Spit'),
+    add_item(oga),
+    remove_option(spit).
 
 do(talk) :-
     i_am_at(friendGroup),
@@ -101,3 +113,30 @@ print_list([]).
 print_list([Head | Tail]) :-
     format('-> ~w', Head), nl,
     print_list(Tail).
+
+concat([], List, List).
+concat([Head|Tail], List, [Head|ExtandedTail]) :- concat(Tail, List, ExtandedTail).
+
+contains([Head|_], Head).
+contains([_|Tail], X) :- contains(Tail, X).
+
+remove_element(X, [X|Tail], Tail).
+remove_element(X, [Head|Tail], [Head|ShorterTail]) :- remove_element(X, Tail, ShorterTail).
+
+remove_option(Option) :-
+    i_am_at(Location),
+    options(Location, Options),
+    remove_element(Option, Options, NewOptions),
+    retract(options(Location, Options)),
+    assert(options(Location, NewOptions)).
+
+option_doable(Option) :-
+    i_am_at(Location),
+    options(Location, Options),
+    contains(Options, Option).
+
+add_item(Item) :-
+    inventory(Items),
+    concat(Items, [Item], NewItems),
+    retract(inventory(Items)),
+    assert(inventory(NewItems)).
