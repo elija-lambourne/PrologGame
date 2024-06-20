@@ -77,22 +77,52 @@ go(Direction) :-
 go(_) :-
     write('You can\'t go that way!').
 
-talk :- do(talk),!.
-spit :- do(spit),!.
+talk :- do(talk).
+spit :- do(spit).
 
 do(spit) :-
     i_am_at(friendGroup),
     option_doable(spit),
     write('Spit'),
     add_item(oga),
-    remove_option(spit).
+    remove_option(spit),!.
 
 do(talk) :-
     i_am_at(friendGroup),
-    write('Oga Oga').
+    write('Oga Oga'),!.
 
 do(_) :-
     write('You can\'t do that here!').
+
+use(oga) :-
+    can_use(oga),
+    write('
++-------------------------------+
+|            +-----             |
+|           /                   |
+|  --------+                    |
+|    ^      \\      +-----       |
+|    |       \\    /             |
+|Main station \\  /              |
+|              +                |
+|     \\       /        +-----   |
+|      +-----+        /         |
+|           /        /          |
+| --+       +-------+           |
+|    \\      |                   |
+|     +-----+------+            |
+|           |       \\           |
+|    You -> |                   |
+|           |                   |
++-------------------------------+
+    '),!.
+
+use(_) :-
+    write('You can\'t use that item!').
+
+inventory :- 
+    inventory(Items),
+    print_list(Items).
 
 look :-
     i_am_at(Location),
@@ -134,6 +164,10 @@ option_doable(Option) :-
     i_am_at(Location),
     options(Location, Options),
     contains(Options, Option).
+
+can_use(Item) :-
+    inventory(Items),
+    contains(Items, Item).
 
 add_item(Item) :-
     inventory(Items),
