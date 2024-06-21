@@ -3,23 +3,27 @@
 :- dynamic(i_am_at/1).
 :- dynamic(inventory/1).
 :- dynamic(options/2).
-:- dynamic(current_question/1).
+:- dynamic(current_answer/1).
 :- dynamic(is_allowed_to_leave_tram/0).
 
 inventory([]).
 
-options(friendGroup, [spit,open_doors]).
-options(tramDriver, [talk,open_doors]).
-options(middleOfTheTram, [open_doors]).
-options(endOfTheTram, [open_doors]).
+options(friendGroup, [leave_tram]).
+options(tramDriver, [talk,leave_tram]).
+options(middleOfTheTram, [leave_tram]).
+options(endOfTheTram, [leave_tram,talk]).
+options(lost, [restart,restartFromTram]).
 
 i_am_at(friendGroup).
 
-current_question(start).
+current_answer(start).
 
 answers(tramDriver, start, a, catchTrain).
 answers(tramDriver, catchTrain, a, notAllowed).
 answers(tramDriver, catchTrain, b, toilet).
+
+answers(endOfTheTram, start, a, knowTunnels).
+answers(endOfTheTram, knowTunnels, a, drawMap).
 
 path(friendGroup, forwards, middleOfTheTram).
 path(friendGroup, backwards, endOfTheTram).
@@ -32,6 +36,7 @@ path(endOfTheTram, forwards, friendGroup).
 path(tramDriver, backwards, middleOfTheTram).
 
 path(outsideOfTheTram, forwards, firstIntersection).
+path(outsideOfTheTram, enter_tram, tramDriver).
 
 path(firstIntersection, forwards, secondIntersection).
 path(firstIntersection, left, lost).
@@ -40,15 +45,19 @@ path(firstIntersection, backwards, outsideOfTheTram).
 
 path(secondIntersection, forwards, thirdIntersection).
 path(secondIntersection, right, lost).
+path(secondIntersection, backwards, firstIntersection).
 
-path(thirdIntersection, forwards, fourthIntersection).
+path(thirdIntersection, right, fourthIntersection).
 path(thirdIntersection, left, lost).
+path(thirdIntersection, backwards, secondIntersection).
 
 path(fourthIntersection, left, fifthIntersection).
 path(fourthIntersection, right, lost).
+path(fourthIntersection, backwards, thirdIntersection).
 
 path(fifthIntersection, left, mainStation).
 path(fifthIntersection, right, lost).
+path(fifthIntersection, backwards, fourthIntersection).
 
 start :-
     initRenderer,
@@ -77,14 +86,15 @@ w :- go(forwards).
 s :- go(backwards).
 a :- go(left).
 d :- go(right).
+enter_tram :- go(enter_tram).
 
 go(Direction) :- 
     i_am_at(Location),
     path(Location, Direction, NewLocation),
-    retract(current_question(_)),
-    assert(current_question(start)),
+    retract(current_answer(_)),
+    assert(current_answer(start)),
     retract(i_am_at(Location)),
-    assert(i_am_at(NewLocation)), !,
+    assert(i_am_at(NewLocation)),!,
     look.
 
 go(_) :-
@@ -92,34 +102,61 @@ go(_) :-
 
 talk :- do(talk).
 spit :- do(spit).
+leave_tram :- do(leave_tram).
+restart :- do(restart).
+restartFromTram :- do(restartFromTram).
+
 say(Answer) :-
     i_am_at(Location),
-    current_question(Current),
+    current_answer(Current),
     answers(Location, Current, Answer, NextAnswer),
-    retract(current_question(Current)),
-    assert(current_question(NextAnswer)),
+    retract(current_answer(Current)),
+    assert(current_answer(NextAnswer)),
     do(talk),!.
 
 say(_) :-
     write('You can\'t say that now!').
 
-do(spit) :-
-    i_am_at(friendGroup),
-    option_doable(spit),
-    write('Spit'),
-    add_item(oga),
-    remove_option(spit),!.
+do(restartFromTram) :-
+    option_doable(restartFromTram),
+    
+    retract(i_am_at(_)),
+    assert(i_am_at(outsideOfTheTram)),
+    look,!.
+
+do(restart) :-
+    option_doable(restart),
+    [main],!.
+
+do(leave_tram) :-
+    option_doable(leave_tram),
+    is_allowed_to_leave_tram,
+    write('You left the tram!'),
+    retract(i_am_at(_)),
+    assert(i_am_at(outsideOfTheTram)),!.
+
+do(leave_tram) :-
+    option_doable(leave_tram),
+    write('The tram driver notices that you are trying to leave the tram without his permission.'),nl,
+    write('You get in a conflict with him.'),nl,
+    write('The conflict takes so long, that it is impossible to catch the train.'),nl,
+    write('GAME OVER'),
+    [main],!.
+
+% tramDriver talk
 
 do(talk) :-
     i_am_at(tramDriver),
-    current_question(start),
+    option_doable(talk),
+    current_answer(start),
     write('What do you want?'),nl,
     write('Answers:'),nl,
     write('a: I want to leave the tram!'),!.
 
 do(talk) :-
     i_am_at(tramDriver),
-    current_question(catchTrain),
+    option_doable(talk),
+    current_answer(catchTrain),
     write('Why would you want to do that?'),nl,
     write('Answers:'),nl,
     write('a: I need to catch my train.'),nl,
@@ -127,21 +164,51 @@ do(talk) :-
 
 do(talk) :-
     i_am_at(tramDriver),
-    current_question(notAllowed),
+    option_doable(talk),
+    current_answer(notAllowed),
     write('You can\'t just walk through the tunnels!'),nl,
     write('Just leave me alone.'),!.
 
 do(talk) :-
     i_am_at(tramDriver),
-    current_question(toilet),
+    option_doable(talk),
+    current_answer(toilet),
     write('Ok, but be quick the tram could be ready at any moment!'),
+    remove_option(talk),
     assert(is_allowed_to_leave_tram),!.
+
+% endOfTheTram talk
+
+do(talk) :-
+    i_am_at(endOfTheTram),
+    option_doable(talk),
+    current_answer(start),
+    write('What do you want?'),nl,
+    write('Answers:'),nl,
+    write('a: You guys look like you know the tram tunnels.'),!.
+
+do(talk) :-
+    i_am_at(endOfTheTram),
+    option_doable(talk),
+    current_answer(knowTunnels),
+    write('Yeah we often adventure the tunnels and create some grafities.'),nl,
+    write('Answers:'),nl,
+    write('a: Can you draw a map for me?'),!.
+
+do(talk) :-
+    i_am_at(endOfTheTram),
+    option_doable(talk),
+    current_answer(drawMap),
+    write('Here is a map for you.'),nl,nl,
+    write('You received a map of the tunnels!'),
+    add_item(map),
+    remove_option(talk),!.
 
 do(_) :-
     write('You can\'t do that here!').
 
-use(oga) :-
-    can_use(oga),
+use(map) :-
+    can_use(map),
     write('
 +-------------------------------+
 |            +-----             |
@@ -182,8 +249,25 @@ look(Location) :-
     options(Location, Options),
     print_list(Options));!.
 
+describe(friendGroup) :-
+    write('You are at your friend group.').
+
+describe(middleOfTheTram) :-
+    write('You are at your in the middle of the tram.').
+
+describe(endOfTheTram) :-
+    write('You are at the end of the tram.'),nl,
+    write('Your see a group of greek people with spray cans.').
+
+describe(tramDriver) :-
+    write('You are next to the tram driver.').
+
+describe(lost) :-
+    write('You are lost in the tunnels!'),nl,
+    write('GAME OVER').
+
 describe(X) :-
-    format('Place: ~w', X).
+    format('Current location: ~w', X).
 
 print_list([]).
 print_list([Head | Tail]) :-
