@@ -82,7 +82,6 @@ answers(frontOfTheTram, button, d, restorePower).
 answers(frontOfTheTram, button, e, explodeTram).
 answers(frontOfTheTram, button, f, restartTram).
 
-
 answers(endOfTheTram, start, a, knowTunnels).
 answers(endOfTheTram, knowTunnels, a, drawMap).
 
@@ -319,13 +318,13 @@ do(talk) :-
     i_am_at(middleOfTheTram),
     option_doable(talk_to_old_man),
     current_answer(knowMongolian),
-    write('Yeah sure, why?'), nl,
+    write('Yeah sure, why?'), nl,nl,
     (
         (
             has_picture_of_circuit,
             write('a: Show him the picture of the circuit. \'I\'m trying to fix the tram.\'')
         ) ; (
-            write('a: I don\'t know yet...'), nl
+            write('(I don\'t know yet...)'), nl
         )
     ), nl, !.
 
@@ -342,8 +341,9 @@ do(talk) :-
     option_doable(talk_to_old_man),
     current_answer(showPictureOfCircuit),
     has_picture_of_circuit,
-    write('Oh, I see. I can help you with that. I\'ll translate it on your phone.'), nl,
-    add_item(circuit_translation), 
+    write('Oh, I see. I can help you with that. I\'ll translate it on your phone.'), nl,nl,
+    write('You received a circuit_translation!'),
+    add_item(circuit_translation),
     remove_option(talk_to_old_man), !.
 
 do(talk) :-
@@ -356,7 +356,7 @@ do(talk) :-
             has_picture_of_breaker,
             write('a: Show him the picture of the breaker')
         ) ; 
-        write('a: Take a picture of the breaker first.')
+        write('(Tip: Take a picture of the breaker first, then come back for this answer.)')
     ), nl,
     (
         said_lost_screwdriver ; 
