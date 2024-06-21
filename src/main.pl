@@ -1,4 +1,5 @@
 :- [renderer].
+:- [credits].
 
 :- dynamic(i_am_at/1).
 :- dynamic(inventory/1).
@@ -7,6 +8,8 @@
 :- dynamic(is_allowed_to_leave_tram/0).
 
 inventory([]).
+
+credits :- dev_credits.
 
 options(friendGroup, [leave_tram]).
 options(tramDriver, [talk,leave_tram]).
