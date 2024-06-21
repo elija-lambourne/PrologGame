@@ -5,12 +5,14 @@
 :- dynamic(options/2).
 :- dynamic(current_answer/1).
 :- dynamic(is_allowed_to_leave_tram/0).
+:- dynamic(said_lost_screwdriver/0).
 
 inventory([]).
 
 options(friendGroup, [leave_tram]).
 options(tramDriver, [talk,leave_tram]).
-options(middleOfTheTram, [leave_tram]).
+options(frontOfTheTram, [leave_tram, investigate_breaker]).
+options(middleOfTheTram, [leave_tram,talk_to_old_man, talk_to_student]).
 options(endOfTheTram, [leave_tram,talk]).
 
 options(lost, [restart,restartFromTram]).
@@ -24,18 +26,31 @@ answers(tramDriver, start, a, catchTrain).
 answers(tramDriver, catchTrain, a, notAllowed).
 answers(tramDriver, catchTrain, b, toilet).
 
+% talk_to_old_man
+answers(middleOfTheTram, oldMan, a,knowMongolian).
+answers(middleOfTheTram, oldMan, b, haveScrewdriver).
+
+% talk_to_student
+answers(middleOfTheTram, student, a, hasScrewdriver).
+answers(middleOfTheTram, student, b, startConvo).
+answers(middleOfTheTram, hasScrewdriver, b, lostScrewdriver).
+
+
 answers(endOfTheTram, start, a, knowTunnels).
 answers(endOfTheTram, knowTunnels, a, drawMap).
 
 path(friendGroup, forwards, middleOfTheTram).
 path(friendGroup, backwards, endOfTheTram).
 
-path(middleOfTheTram, forwards, tramDriver).
+path(middleOfTheTram, forwards, frontOfTheTram).
 path(middleOfTheTram, backwards, friendGroup).
 
 path(endOfTheTram, forwards, friendGroup).
 
-path(tramDriver, backwards, middleOfTheTram).
+path(frontOfTheTram, forwards, tramDriver).
+path(frontOfTheTram, backwards, middleOfTheTram).
+
+path(tramDriver, backwards, frontOfTheTram).
 
 path(outsideOfTheTram, forwards, firstIntersection).
 path(outsideOfTheTram, enter_tram, tramDriver).
@@ -110,9 +125,18 @@ go(Direction) :-
 go(_) :-
     write('You can\'t go that way!').
 
+talk_to_old_man :- 
+    retract(current_answer(_)),
+    assert(current_answer(oldMan)),
+    do(talk).
+talk_to_student :- 
+    retract(current_answer(_)),
+    assert(current_answer(student)),
+    do(talk).
 talk :- do(talk).
 spit :- do(spit).
 leave_tram :- do(leave_tram).
+investigate_breaker :- do(investigate_breaker).
 restart :- do(restart).
 restartFromTram :- do(restartFromTram).
 
@@ -151,8 +175,14 @@ do(leave_tram) :-
     write('The tram driver notices that you are trying to leave the tram without his permission.'),nl,
     write('You get in a conflict with him.'),nl,
     write('The conflict takes so long, that it is impossible to catch the train.'),nl,
-    write('GAME OVER'),
+    game_over,
     [main],!.
+
+do(investigate_breaker) :-
+    option_doable(investigate_breaker),
+    i_am_at(frontOfTheTram),
+    write('You see a breaker attached to the drivers cabin.'),nl,
+    write('It looks like it is closed by some standard size 10 cross screws.'),nl.
 
 % tramDriver talk
 
@@ -215,6 +245,69 @@ do(talk) :-
     add_item(map),
     remove_option(talk),!.
 
+% middleOfTheTram
+do(talk) :-
+    i_am_at(middleOfTheTram),
+    option_doable(talk_to_old_man),
+    current_answer(oldMan),
+    write("..."), nl,
+    write("a: Do you know any mongolian?"), nl,
+    write("b: Do you have a screwdriver?"), !.
+
+do(talk) :-
+    i_am_at(middleOfTheTram),
+    option_doable(talk_to_old_man),
+    current_answer(haveScrewdriver),
+    write("үгүй."), !.
+
+do(talk) :-
+    i_am_at(middleOfTheTram),
+    option_doable(talk_to_old_man),
+    current_answer(knowMongolian),
+    write('Yeah sure, why?'), !. % TODO ADD OPTION TO SHOW HIM PICTURE OF BREAKER FOR TRANSLATION
+
+do(talk) :-
+    i_am_at(middleOfTheTram),
+    option_doable(talk_to_student),
+    current_answer(student),
+    write("..."), nl,
+    write("a: Do you have a screwdriver?"), nl,
+    write("b: Start gossiping about teachers"), !.
+
+do(talk) :-
+    i_am_at(middleOfTheTram),
+    option_doable(talk_to_student),
+    current_answer(student),
+    write("Piss off. Get your screwdriver elsewhere!"), !.
+
+do(talk) :-
+    i_am_at(middleOfTheTram),
+    option_doable(talk_to_student),
+    current_answer(hasScrewdriver),
+    write("Yeah, what do you need it for?"), nl,
+    write("a: Show him the picture of the breaker"), nl, % TODO ONLY MAKE AVAIABLE IF HAVE PICTURE
+    (
+        said_lost_screwdriver ; 
+        write("b: I lost mine")
+    ), !.
+
+do(talk) :-
+    i_am_at(middleOfTheTram),
+    option_doable(talk_to_student),
+    current_answer(lostScrewdriver),
+    write("Well."), nl,
+    assert(said_lost_screwdriver),
+    write("I have one, but I'm not giving it to you. I guess you should've taken better care of yours!"), nl, !.
+
+do(talk) :-
+    i_am_at(middleOfTheTram),
+    option_doable(talk_to_student),
+    current_answer(startConvo),
+    write("Hey, what's up?"), nl,
+    write("Prof. K. is such a -"), nl, nl,
+    write("You talked too much and missed your train."),
+    game_over, !.
+
 do(_) :-
     write('You can\'t do that here!').
 
@@ -244,6 +337,18 @@ use(map) :-
 use(_) :-
     write('You can\'t use that item!').
 
+game_over :-
+    write("
+  _____                         ____                 
+ / ____|                       / __ \\                
+| |  __  __ _ _ __ ___   ___  | |  | |_   _____ _ __ 
+| | |_ |/ _` | '_ ` _ \\ / _ \\ | |  | \\ \\ / / _ \\ '__|
+| |__| | (_| | | | | | |  __/ | |__| |\\ V /  __/ |   
+ \\_____|\\__,_|_| |_| |_|\\___|  \\____/  \\_/ \\___|_|   
+                                                    
+    "),nl,
+    write('You can restart the game by typing restart.'),nl, !.
+
 inventory :- 
     inventory(Items),
     print_list(Items).
@@ -270,6 +375,11 @@ describe(endOfTheTram) :-
     write('You are at the end of the tram.'),nl,
     write('Your see a group of greek people with spray cans.').
 
+describe(frontOfTheTram) :-
+    write('You are at the front of the tram.'),nl,
+    write('You see the tram drivers cabin ahead.'),nl,
+    write('There\'s a breaker attached to the drivers cabin.').
+
 describe(tramDriver) :-
     write('You are next to the tram driver.').
 
@@ -278,8 +388,8 @@ describe(outsideOfTheTram) :-
     write('You can go forward through the tunnel.').
 
 describe(lost) :-
-    write('You are lost in the tunnels!'),nl,
-    write('GAME OVER').
+    write('You got lost in the tunnels!'),nl,
+    game_over.
 
 describe(firstIntersection) :-
     write('You are at an intersection.'),nl,
