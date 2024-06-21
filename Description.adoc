@@ -1,4 +1,4 @@
-= Tram Prolog Game
+= Escape the Tram
 
 == Ideas
 
