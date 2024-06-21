@@ -12,7 +12,9 @@ options(friendGroup, [leave_tram]).
 options(tramDriver, [talk,leave_tram]).
 options(middleOfTheTram, [leave_tram]).
 options(endOfTheTram, [leave_tram,talk]).
+
 options(lost, [restart,restartFromTram]).
+options(mainStation, [restart]).
 
 i_am_at(friendGroup).
 
@@ -71,16 +73,24 @@ start :-
 
     setCameraPosition([0, 0, 0], [0, 0, 0]),
 
-    read_obj_file('../res/cube.obj', Cube),
+    write('Welcome to our game!'),nl,
+    write('--------------------'),nl,nl,
 
-    update(Cube, 0).
+    write('Instructions:'),nl,
+    write('w - forwards'),nl,
+    write('s - backwards'),nl,
+    write('a - left'),nl,
+    write('d - right'),nl,nl,
 
-update(Object, R) :-
-    clear,
-    drawObjectInstances([[[0, 0, -3], [R, R, R], [1, 1, 1]]], Object),
-    NewR is R + 5,
-    sleep(0.33),
-    update(Object, NewR).
+    write('inventory - prints a list of all your items'),nl,
+    write('use(Item) - uses an item'),nl,nl,
+
+    write('say(Answer) - chooses an answer'),nl,nl,
+
+    write('You can just type out the options if a location has one'),nl,
+    write('-------------------------------------------------------'),nl,nl,
+
+    look.
 
 w :- go(forwards).
 s :- go(backwards).
@@ -126,7 +136,8 @@ do(restartFromTram) :-
 
 do(restart) :-
     option_doable(restart),
-    [main],!.
+    [main],
+    start,!.
 
 do(leave_tram) :-
     option_doable(leave_tram),
@@ -265,6 +276,11 @@ describe(tramDriver) :-
 describe(lost) :-
     write('You are lost in the tunnels!'),nl,
     write('GAME OVER').
+
+describe(mainStation) :-
+    write('You got to the train in time!'),nl,
+    write('Thanks for playing!'),nl,nl,
+    write('You can try to find other paths to the finish!').
 
 describe(X) :-
     format('Current location: ~w', X).
