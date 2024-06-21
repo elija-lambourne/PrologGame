@@ -1,6 +1,32 @@
-:- [renderer].
-:- [credits].
-
+escape_the_tram :-
+    write('   ___     ___   __   __   ___     _       ___      ___    ___     ___              ___   __   __ '), nl,
+    write('  |   \\   | __|  \\ \\ / /  | __|   | |     / _ \\    | _ \\  | __|   |   \\     o O O  | _ )  \\ \\ / / '), nl,
+    write('  | |) |  | _|    \\ V /   | _|    | |__  | (_) |   |  _/  | _|    | |) |   o       | _ \\   \\ V /  '), nl,
+    write('  |___/   |___|   _\\_/_   |___|   |____|  \\___/   _|_|_   |___|   |___/   TS__[O]  |___/   _|_|_  '), nl,
+    write('_|"""""|_|"""""|_| """"|_|"""""|_|"""""|_|"""""|_| """ |_|"""""|_|"""""| {======|_|"""""|_| """ | '), nl,
+    write('"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\'./o--000\'"`-0-0-\'"`-0-0-\''), nl,
+    nl,
+    write('    ___    ___    _   _    _                ___     ___    _  _     ___     ___    _  _   '), nl,
+    write('   | _ \\  /   \\  | | | |  | |       o O O  / __|   / __|  | || |   | __|   |_ _|  | \\| |  '), nl,
+    write('   |  _/  | - |  | |_| |  | |__    o       \\__ \\  | (__   | __ |   | _|     | |   | .` |  '), nl,
+    write('  _|_|_   |_|_|   \\___/   |____|  TS__[O]  |___/   \\___|  |_||_|   |___|   |___|  |_|\\_|  '), nl,
+    write('_| """ |_|"""""|_|"""""|_|"""""| {======|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""| '), nl,
+    write('"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\'./o--000\'"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\' '), nl,
+    nl,
+    write('   ___     _       ___        _    ___              _       ___   __  __    ___     ___    _   _    ___    _  _     ___   '), nl,
+    write('  | __|   | |     |_ _|    _ | |  /   \\     o O O  | |     /   \\ |  \\/  |  | _ )   / _ \\  | | | |  | _ \\  | \\| |   | __|  '), nl,
+    write('  | _|    | |__    | |    | || |  | - |    o       | |__   | - | | |\\/| |  | _ \\  | (_) | | |_| |  |   /  | .` |   | _|   '), nl,
+    write('  |___|   |____|  |___|   _\\__/   |_|_|   TS__[O]  |____|  |_|_| |_|  |_|  |___/   \\___/   \\___/   |_|_\\  |_|\\_|   |___|  '), nl,
+    write('_|"""""|_|"""""|_|"""""|_|"""""|_|"""""| {======|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""| '), nl,
+    write('"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\'./o--000\'"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\' '), nl,
+    nl,
+    write(' __  __    ___      ___   _  __    ___              ___     ___    _  _     ___   '), nl,
+    write('|  \\/  |  |_ _|    | __| | |/ /   /   \\     o O O  | _ \\   | __|  | \\| |   | __|  '), nl,
+    write('| |\\/| |   | |     | _|  | \' <    | - |    o       |   /   | _|   | .` |   | _|   '), nl,
+    write('|_|  |_|  |___|   _|_|_  |_|\\_\\   |_|_|   TS__[O]  |_|_\\   |___|  |_|\\_|   |___|  '), nl,
+    write('_|"""""|_|"""""|_| """ |_|"""""|_|"""""| {======|_|"""""|_|"""""|_|"""""|_|"""""| '), nl,
+    write('"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\'./o--000\'"`-0-0-\'"`-0-0-\'"`-0-0-\'"`-0-0-\' '), nl.
+    
 :- dynamic(i_am_at/1).
 :- dynamic(inventory/1).
 :- dynamic(options/2).
@@ -18,7 +44,7 @@
 
 inventory([phone]).
 
-credits :- dev_credits.
+credits :- escape_the_tram.
 
 options(friendGroup, [leave_tram]).
 options(tramDriver, [talk,leave_tram]).
@@ -98,20 +124,22 @@ path(fifthIntersection, right, lost).
 path(fifthIntersection, backwards, fourthIntersection).
 
 start :-
-    initRenderer,
-
-    setSymbol('██'),
-    setOffset(0, 6),
-
-    setSize(50, 50),
-    setFOV(90),
-    setRenderDistance(0.1, 10),
-
-    setCameraPosition([0, 0, 0], [0, 0, 0]),
 
     write('Welcome to our game!'),nl,
     write('--------------------'),nl,nl,
+    help,
+    write('-------------------------------------------------------'),nl,nl,
+    write('You and your friends are taking the tram to the main station. 
+You enter a tube on the way there.
+Just as you are talking to your friends, the trams lights go out.
+You are stuck!
+You must find a way to catch your train or you need to stay the night.
+You feel like your phone might come in handy later ;)
+'),nl,nl,
 
+    look.
+
+help :-
     write('Instructions:'),nl,
     write('w - forwards'),nl,
     write('s - backwards'),nl,
@@ -121,12 +149,10 @@ start :-
     write('inventory - prints a list of all your items'),nl,
     write('use(Item) - uses an item'),nl,nl,
 
-    write('say(Answer) - chooses an answer'),nl,nl,
-
-    write('You can just type out the options if a location has one'),nl,
-    write('-------------------------------------------------------'),nl,nl,
-
-    look.
+    write('say(Answer) - chooses an answer'),nl,
+    write('look - get information about the current location'),nl,nl,
+    write('credits - show the credits'),nl,nl,
+    write('You can just type out the options if a location has one'),nl, write('Type "help" to see this again!'),nl.
 
 w :- go(forwards).
 s :- go(backwards).
@@ -668,17 +694,20 @@ look(Location) :-
     print_list(Options));!.
 
 describe(friendGroup) :-
-    write('You are at your friend group.').
+    write('You are at your friend group.'),nl, 
+    write('You can go forwards to the middle of the tram or you can go backwards to the end of the tram.').
 
 describe(middleOfTheTram) :-
-    write('You are at your in the middle of the tram.').
+    write('You are in the middle of the tram.'), nl,
+    write('You can go backwards to your friend group or you can go forwards to the front of the tram').
 
 describe(endOfTheTram) :-
     write('You are at the end of the tram.'),nl,
-    write('Your see a group of greek people with spray cans.').
+    write('You can go forwards to your friend group'),nl,
+    write('You see a group of greek people with spray cans.').
 
 describe(frontOfTheTram) :-
-    write('You are at the front of the tram.'),nl,
+    write('You are at the front of the tram.'),nl,write('You can go backwards to the middle of the tram'),nl,
     write('You see the tram drivers cabin ahead.'),nl,
     write('There\'s a breaker attached to the drivers cabin.').
 
