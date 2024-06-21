@@ -6,8 +6,11 @@
 :- dynamic(current_answer/1).
 :- dynamic(is_allowed_to_leave_tram/0).
 :- dynamic(said_lost_screwdriver/0).
+:- dynamic(has_picture_of_breaker/0).
+:- dynamic(game_over/0).
+:- dynamic(answers/4).
 
-inventory([]).
+inventory([phone]).
 
 options(friendGroup, [leave_tram]).
 options(tramDriver, [talk,leave_tram]).
@@ -34,6 +37,7 @@ answers(middleOfTheTram, oldMan, b, haveScrewdriver).
 answers(middleOfTheTram, student, a, hasScrewdriver).
 answers(middleOfTheTram, student, b, startConvo).
 answers(middleOfTheTram, hasScrewdriver, b, lostScrewdriver).
+answers(middleOfTheTram, hasScrewdriver, a, showPictureOfBreaker).
 
 
 answers(endOfTheTram, start, a, knowTunnels).
@@ -159,7 +163,10 @@ do(restartFromTram) :-
     look,!.
 
 do(restart) :-
-    option_doable(restart),
+    (
+        option_doable(restart) ;
+        game_over
+    ),
     [main],
     start,!.
 
@@ -273,6 +280,7 @@ do(talk) :-
     write("..."), nl,
     write("a: Do you have a screwdriver?"), nl,
     write("b: Start gossiping about teachers"), !.
+    
 
 do(talk) :-
     i_am_at(middleOfTheTram),
@@ -285,11 +293,29 @@ do(talk) :-
     option_doable(talk_to_student),
     current_answer(hasScrewdriver),
     write("Yeah, what do you need it for?"), nl,
-    write("a: Show him the picture of the breaker"), nl, % TODO ONLY MAKE AVAIABLE IF HAVE PICTURE
+    (
+        (
+            has_picture_of_breaker,
+            write("a: Show him the picture of the breaker")
+        ) ; 
+        write("a: Take a picture of the breaker first.")
+    ), nl, % TODO ONLY MAKE AVAIABLE IF HAVE PICTURE
     (
         said_lost_screwdriver ; 
         write("b: I lost mine")
     ), !.
+
+do(talk) :-
+    i_am_at(middleOfTheTram),
+    option_doable(talk_to_student),
+    current_answer(showPictureOfBreaker),
+    has_picture_of_breaker,
+    write("Oh, I see. I can help you with that."), nl,
+    write("You can take mine for now, I stole it from the schools workshop anyways."), nl, nl,
+    write("You received a screwdriver!"), nl,
+    add_item(screwdriver),
+    remove_option(talk_to_student),
+    !.
 
 do(talk) :-
     i_am_at(middleOfTheTram),
@@ -310,6 +336,16 @@ do(talk) :-
 
 do(_) :-
     write('You can\'t do that here!').
+
+use(phone) :-
+    i_am_at(frontOfTheTram),
+    (
+        has_picture_of_breaker,
+        write("You already took a picture of the breaker.")
+    ) ; (
+        write("You took a picture of the breaker. Might want to show it to someone..."),
+        assert(has_picture_of_breaker)
+    ),!.
 
 use(map) :-
     can_use(map),
@@ -337,7 +373,9 @@ use(map) :-
 use(_) :-
     write('You can\'t use that item!').
 
+
 game_over :-
+    assert(game_over),
     write("
   _____                         ____                 
  / ____|                       / __ \\                
@@ -378,7 +416,7 @@ describe(endOfTheTram) :-
 describe(frontOfTheTram) :-
     write('You are at the front of the tram.'),nl,
     write('You see the tram drivers cabin ahead.'),nl,
-    write('There\'s a breaker attached to the drivers cabin.').
+    write('There\'s a breaker attached to the drivers cabin. You could take a picture of it with your phone...').
 
 describe(tramDriver) :-
     write('You are next to the tram driver.').
