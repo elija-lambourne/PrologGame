@@ -1,0 +1,13 @@
+= Tram Prolog Game
+
+== Ideas
+
+So what was the starting point of this game. Well actually it was a real life occurrence that happened just a few weeks ago! We got stuck in the tram, on our way to Linz HBF. Some of us missed their trains, so we decided this could be made into a fun little text adventure. After this we had a brainstorming session where we came up with a story for the game! I am not gonna elaborate further on this, you can find all of this out by playing the game ;)
+
+== Mechanics
+
+Our game has simple mechanics, like walking, talking and using items. The key mechanics are simple but they are fun. What differentiates it from other games from this genre is a 3D Console Renderer written in Prolog. This renderer took quite a bit off time and it can even load the shipped .obj files from the resources folder. This is all done dynamically. 
+
+== How to actually view the Render?
+
+To view a render you need to zoom out, a lot! The renderer can render on a fairly small zoom too but there will be more inaccuraccies, these can be fixed by just zooming out in your console. The problem we had to overcome is a way to tell the player to zoom out. So we have decided that it would be best to make viewing the Renders optional. If you wanna go through the effort of zooming out you can just type render(item_name). This of course only works if you have obtained the items already. It is quite a neet little feature which can be used but does not have too! This only works with WSL on Windows or a Linux Distribution tho.
