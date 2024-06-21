@@ -273,17 +273,38 @@ describe(endOfTheTram) :-
 describe(tramDriver) :-
     write('You are next to the tram driver.').
 
+describe(outsideOfTheTram) :-
+    write('Your are outside of the tram.'),nl,
+    write('You can go forward through the tunnel.').
+
 describe(lost) :-
     write('You are lost in the tunnels!'),nl,
     write('GAME OVER').
+
+describe(firstIntersection) :-
+    write('You are at an intersection.'),nl,
+    write('You can go forwards, left or right.').
+
+describe(secondIntersection) :-
+    write('You are at an intersection.'),nl,
+    write('You can go forwards or right.').
+
+describe(thirdIntersection) :-
+write('You are at an intersection.'),nl,
+write('You can go left or right.').
+
+describe(fourthIntersection) :-
+write('You are at an intersection.'),nl,
+write('You can go left or right.').
+
+describe(fifthIntersection) :-
+write('You are at an intersection.'),nl,
+write('You can go left or right.').
 
 describe(mainStation) :-
     write('You got to the train in time!'),nl,
     write('Thanks for playing!'),nl,nl,
     write('You can try to find other paths to the finish!').
-
-describe(X) :-
-    format('Current location: ~w', X).
 
 print_list([]).
 print_list([Head | Tail]) :-
