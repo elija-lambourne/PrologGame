@@ -320,8 +320,6 @@ do(talk) :-
     add_item(circuit_translation), 
     remove_option(talk_to_old_man), !.
 
-
-
 do(talk) :-
     i_am_at(middleOfTheTram),
     option_doable(talk_to_student),
@@ -333,7 +331,7 @@ do(talk) :-
             write('a: Show him the picture of the breaker')
         ) ; 
         write('a: Take a picture of the breaker first.')
-    ), nl, % TODO ONLY MAKE AVAIABLE IF HAVE PICTURE
+    ), nl,
     (
         said_lost_screwdriver ; 
         write('b: I lost mine')
