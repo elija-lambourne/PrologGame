@@ -4,14 +4,22 @@
 :- dynamic(inventory/1).
 :- dynamic(options/2).
 :- dynamic(current_question/1).
+:- dynamic(is_allowed_to_leave_tram/0).
 
 inventory([]).
 
-options(friendGroup, [talk, spit]).
+options(friendGroup, [spit,open_doors]).
+options(tramDriver, [talk,open_doors]).
+options(middleOfTheTram, [open_doors]).
+options(endOfTheTram, [open_doors]).
 
 i_am_at(friendGroup).
 
 current_question(start).
+
+answers(tramDriver, start, a, catchTrain).
+answers(tramDriver, catchTrain, a, notAllowed).
+answers(tramDriver, catchTrain, b, toilet).
 
 path(friendGroup, forwards, middleOfTheTram).
 path(friendGroup, backwards, endOfTheTram).
@@ -41,10 +49,6 @@ path(fourthIntersection, right, lost).
 
 path(fifthIntersection, left, mainStation).
 path(fifthIntersection, right, lost).
-
-questions(friendGroup, start, a).
-questions(friendGroup, start, b).
-questions(friendGroup, a, c).
 
 start :-
     initRenderer,
@@ -77,6 +81,8 @@ d :- go(right).
 go(Direction) :- 
     i_am_at(Location),
     path(Location, Direction, NewLocation),
+    retract(current_question(_)),
+    assert(current_question(start)),
     retract(i_am_at(Location)),
     assert(i_am_at(NewLocation)), !,
     look.
@@ -86,12 +92,12 @@ go(_) :-
 
 talk :- do(talk).
 spit :- do(spit).
-say(Question) :-
+say(Answer) :-
     i_am_at(Location),
     current_question(Current),
-    questions(Location, Current, Question),
+    answers(Location, Current, Answer, NextAnswer),
     retract(current_question(Current)),
-    assert(current_question(Question)),
+    assert(current_question(NextAnswer)),
     do(talk),!.
 
 say(_) :-
@@ -105,24 +111,31 @@ do(spit) :-
     remove_option(spit),!.
 
 do(talk) :-
-    i_am_at(friendGroup),
+    i_am_at(tramDriver),
     current_question(start),
-    write('Oga Oga'),!.
+    write('What do you want?'),nl,
+    write('Answers:'),nl,
+    write('a: I want to leave the tram!'),!.
 
 do(talk) :-
-    i_am_at(friendGroup),
-    current_question(a),
-    write('a'),!.
+    i_am_at(tramDriver),
+    current_question(catchTrain),
+    write('Why would you want to do that?'),nl,
+    write('Answers:'),nl,
+    write('a: I need to catch my train.'),nl,
+    write('b: I need to go to the toilet.'),!.
 
 do(talk) :-
-    i_am_at(friendGroup),
-    current_question(b),
-    write('b'),!.
+    i_am_at(tramDriver),
+    current_question(notAllowed),
+    write('You can\'t just walk through the tunnels!'),nl,
+    write('Just leave me alone.'),!.
 
 do(talk) :-
-    i_am_at(friendGroup),
-    current_question(c),
-    write('c'),!.
+    i_am_at(tramDriver),
+    current_question(toilet),
+    write('Ok, but be quick the tram could be ready at any moment!'),
+    assert(is_allowed_to_leave_tram),!.
 
 do(_) :-
     write('You can\'t do that here!').
