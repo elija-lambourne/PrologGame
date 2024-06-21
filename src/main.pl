@@ -3,12 +3,15 @@
 :- dynamic(i_am_at/1).
 :- dynamic(inventory/1).
 :- dynamic(options/2).
+:- dynamic(current_question/1).
 
 inventory([]).
 
 options(friendGroup, [talk, spit]).
 
 i_am_at(friendGroup).
+
+current_question(start).
 
 path(friendGroup, forwards, middleOfTheTram).
 path(friendGroup, backwards, endOfTheTram).
@@ -38,6 +41,10 @@ path(fourthIntersection, right, lost).
 
 path(fifthIntersection, left, mainStation).
 path(fifthIntersection, right, lost).
+
+questions(friendGroup, start, a).
+questions(friendGroup, start, b).
+questions(friendGroup, a, c).
 
 start :-
     initRenderer,
@@ -79,6 +86,16 @@ go(_) :-
 
 talk :- do(talk).
 spit :- do(spit).
+say(Question) :-
+    i_am_at(Location),
+    current_question(Current),
+    questions(Location, Current, Question),
+    retract(current_question(Current)),
+    assert(current_question(Question)),
+    do(talk),!.
+
+say(_) :-
+    write('You can\'t say that now!').
 
 do(spit) :-
     i_am_at(friendGroup),
@@ -89,7 +106,23 @@ do(spit) :-
 
 do(talk) :-
     i_am_at(friendGroup),
+    current_question(start),
     write('Oga Oga'),!.
+
+do(talk) :-
+    i_am_at(friendGroup),
+    current_question(a),
+    write('a'),!.
+
+do(talk) :-
+    i_am_at(friendGroup),
+    current_question(b),
+    write('b'),!.
+
+do(talk) :-
+    i_am_at(friendGroup),
+    current_question(c),
+    write('c'),!.
 
 do(_) :-
     write('You can\'t do that here!').
