@@ -11,3 +11,5 @@ Our game has simple mechanics, like walking, talking and using items. The key me
 == How to actually view the Render?
 
 To view a render you need to zoom out, a lot! The renderer can render on a fairly small zoom too but there will be more inaccuraccies, these can be fixed by just zooming out in your console. The problem we had to overcome is a way to tell the player to zoom out. So we have decided that it would be best to make viewing the Renders optional. In the game you will see that some places have options, and everytime you obtain an item there will be an option to render it's 3D Model. This of course only works if you have obtained the items already. It is quite a neet little feature which can be used but does not have too! This only works with WSL on Windows or a Linux Distribution tho.
+
+Game By: Paul Schein, Elija Lambourne, Rene Mifka
