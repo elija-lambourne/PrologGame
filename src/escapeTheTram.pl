@@ -423,7 +423,7 @@ do(talk) :-
     i_am_at(frontOfTheTram),
     option_doable(press_button),
     current_answer(sendSos),
-    write('You pressed the SOS button. The emergency service is on the way. You have to wait for them to arrive and you pay a fien.'), nl,
+    write('You pressed the SOS button. The emergency service is on the way. You have to wait for them to arrive and you pay a fine.'), nl,
     game_over, !.
 
 do(talk) :-
@@ -437,8 +437,10 @@ do(talk) :-
     i_am_at(frontOfTheTram),
     option_doable(press_button),
     current_answer(explodeTram),
-    write('You blew up the tram causing a mass casualty. At leasst 40 people are estiamted dead. Your name will be in the historybooks for the clumsiest person to ever live.'), nl,
-    game_over, !.
+    write('You blew up the tram, coincidentally hitting a nuclear transport right above the tram, causing a mass casualty. 
+    At least 40 people are estimated dead. Many others will follow.
+    Your name will be in the history books for the clumsiest person to ever live.'), nl,
+    easter_egg, game_over, !.
 
 do(talk) :-
     i_am_at(frontOfTheTram),
@@ -540,6 +542,45 @@ game_over :-
                                                     
     '),nl,
     write('You can restart the game by typing restart.'),nl, !.
+
+easter_egg :-
+    write('
+    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣶⣶⣿⣿⣶⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣀⣀⡀⠀⠀⣠⣾⣿⠿⠛⠛⠉⠉⠉⠙⠛⠻⢿⣿⣶⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⣾⠿⠿⠛⠛⠛⠿⢿⣾⡿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⢿⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣿⡿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣿⣷⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⣿⣿⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⢤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡴⠚⠓⠋⠀⠀⠉⠙⢣⡀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⡀⢀⣠⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣧⣙⢿⡏⠀⠀⣀⣠⣀⣤⠤⠖⠒⢸⡃⠉⠉⣠⠶⣤⣴⠷⣆⠀⠀⣀⠙⢦⡀⠀⠀⠀⠀⠀⠀⠀⠿⠛⠻⢿⣿⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢀⣠⣴⣶⣾⣿⣿⡿⠿⠛⠃⠈⠉⠁⠀⠀⠀⠀⠀⠀⢸⢳⣤⣾⠁⠀⠀⠀⠀⠈⠉⠉⢉⡿⠀⢷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⣶⣦⣤⣀⠀⠀⠀⠀⠀⠀
+⠀⠀⢀⣠⣶⣿⣿⣿⠿⠛⠉⠀⠀⠀⠀⠀⠀⢀⣀⡠⠤⠀⠄⠐⠒⢾⡞⢩⡄⠀⢠⠀⣀⡀⠀⠀⠀⣾⣅⠀⢸⠠⠤⣤⣄⣄⣀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠛⢿⣿⣷⣦⣄⠀⠀⠀
+⠀⣰⣿⣿⣿⠟⠉⢀⠠⠀⠀⣀⡤⢤⡐⠈⠉⠁⠀⠀⠀⠀⠀⠀⢀⣿⠁⠘⠃⣠⠟⠀⠉⠹⠟⠀⠰⣿⣿⣷⡏⠀⠀⠀⠀⠀⠈⠉⠉⠒⠒⠢⢤⣀⡀⠀⠀⠀⠈⠛⢿⣿⣷⡄⠀
+⢰⣿⣿⠏⠀⠀⠀⠀⢀⣴⣾⠏⠀⢨⡇⠀⠀⠀⠀⠀⠀⢠⠔⠋⢺⣿⠀⡀⠀⠻⠆⠀⢠⡀⠀⠀⠀⠙⠛⣿⡅⠀⠀⠀⠀⠀⠀⠀⠀⣠⠠⣄⠀⠀⠙⣶⣤⡀⠀⠀⢄⠙⣿⣿⡄
+⢾⣿⡇⠀⠀⠀⠀⠀⠘⣿⣿⡄⠀⢺⡝⣤⠀⠀⠀⠀⠠⢁⠎⠰⠡⣿⡄⢷⣂⠠⠐⢒⣯⢿⠆⠀⠀⢀⣠⡾⠁⠀⠀⠀⠀⠀⠀⠀⡜⢠⠒⣈⠳⡌⢆⣻⣿⣷⠀⠀⠈⢂⠈⣿⡷
+⠸⣿⣷⡀⠀⠀⠀⠀⣠⠖⠛⠛⠢⢄⡙⢾⡁⠀⠀⠀⢢⠁⢎⠑⢢⠘⢷⡀⠀⠭⠏⠉⠀⠀⠀⢀⣴⡟⠁⢀⠠⡀⠀⠀⠀⠀⠀⡸⢀⡃⢒⠄⡣⢑⢢⣹⡿⠟⠀⠀⡀⠀⢠⣿⠇
+⠀⠘⠻⣿⣶⣤⣄⣀⣳⡠⠤⠤⣀⣀⡇⠀⢿⣶⢶⡼⣦⣽⣦⣯⢶⣭⢾⢿⡦⣀⡀⠀⠀⠀⠐⡻⠀⢉⣿⢶⣥⡘⣄⠠⢎⡱⡀⡕⢣⠜⣡⢎⡱⣉⢦⡏⠀⠀⠀⠈⣀⣴⣿⠏⠀
+⠀⠀⠀⠀⠉⠛⠻⠿⣿⣀⣀⣀⡀⠈⣢⣠⠇⣿⢮⣱⢣⠞⣴⢊⡗⣎⢧⢻⣆⠈⠙⠻⠭⠴⠚⠁⣠⡾⣋⢮⣙⠿⣶⣜⢦⡱⣱⠪⡕⢮⡑⢮⡔⣣⠞⣀⣀⣤⣴⣿⡿⠋⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⣏⡀⠀⠈⢉⡇⡸⢰⣟⠺⡴⢫⡝⢦⡛⣼⡜⢮⡍⣿⡆⠀⠀⢀⣤⡴⣞⢧⢳⣙⢮⣱⢋⡶⣩⢷⣷⣥⣛⣜⣣⣝⣦⣿⣿⣿⣿⡿⠿⠛⠁⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠽⠿⢮⣵⣿⣬⣯⡵⠷⠾⠓⠋⣹⡝⡦⡝⣾⠁⠀⠀⣾⢣⡽⡜⣎⢧⡹⢦⣍⠳⣎⡵⣚⢼⣻⣿⣿⠿⠟⠛⠛⠛⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣽⡚⡵⣙⣾⠀⠀⠀⣯⢳⡜⡵⢺⣌⡳⢣⣮⣝⢲⢣⡝⢦⡓⣿⡅⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢾⣱⠹⣜⡿⠀⠀⢨⡗⡯⣜⢳⢣⢞⣱⢫⠏⢉⣿⠳⣜⡣⣝⣻⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣇⠻⣬⣷⠀⠀⢸⡯⠵⣎⢏⡮⣓⡎⣿⢠⣟⢣⣛⡴⣙⣶⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡿⢷⣮⡟⠀⠀⠸⣏⡳⢎⢧⢳⣱⣾⡇⣾⢣⢏⠶⣙⢶⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⡇⠀⠀⠀⠀⠀⠀⠙⠛⠋⠋⠉⠁⢰⣷⠛⢯⣮⣝⣾⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣷⠀⠀⢨⡟⢧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⢛⠷⡶⣤⣤⣤⣤⣤⣤⣤⡤⢶⠶⣿⣦⣀⣘⣿⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⢎⡻⢴⠳⡜⢦⡳⡜⢦⣣⠽⣩⢞⡲⣻⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣟⢮⣙⢧⡛⡭⢇⡳⢭⠳⣬⠳⣍⠾⣱⢍⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡿⢎⡵⢎⡵⢫⡝⣜⣧⡛⢶⣙⢎⡳⢭⣚⡜⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡯⡝⣼⡩⢞⡵⣊⢷⡿⣯⢳⢮⡹⣜⢣⡳⢼⡹⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⡷⣙⢦⡝⣳⠼⣱⡟⠀⠙⣯⢶⡹⣬⢳⣙⠶⣩⢿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⢧⢏⡞⡼⣡⢯⣽⠀⠀⠀⠈⢣⣛⡴⣓⠮⡝⣥⢛⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⢫⡞⡼⣱⢓⡮⡇⠀⠀⠀⠀⠀⠳⣣⢏⡞⡹⢆⠯⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣻⠧⣝⡲⢭⠞⣼⡏⠀⠀⠀⠀⠀⠀⢰⢎⡽⣱⢫⢳⣹⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣸⣿⣏⣶⣍⣧⣻⣼⣟⠀⠀⠀⠀⠀⠀⢸⣞⡶⣩⢇⢯⣼⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢶⣟⣁⣀⣀⣭⣭⣯⣤⣿⣿⡇⠀⠀⠀⠀⠀⢸⣿⣿⠛⠛⠋⠉⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⠛⠳⢦⣤⡶⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+    '),nl, !.
 
 draw_circuit_mongolian_broken :-
         i_am_at(frontOfTheTram),
@@ -715,7 +756,7 @@ describe(tramDriver) :-
     write('You are next to the tram driver.').
 
 describe(outsideOfTheTram) :-
-    write('Your are outside of the tram.'),nl,
+    write('You are outside of the tram.'),nl,
     write('You can go forward through the tunnel.').
 
 describe(lost) :-
@@ -753,7 +794,7 @@ print_list([Head | Tail]) :-
     print_list(Tail).
 
 concat([], List, List).
-concat([Head|Tail], List, [Head|ExtandedTail]) :- concat(Tail, List, ExtandedTail).
+concat([Head|Tail], List, [Head|ExtendedTail]) :- concat(Tail, List, ExtendedTail).
 
 contains([Head|_], Head).
 contains([_|Tail], X) :- contains(Tail, X).
