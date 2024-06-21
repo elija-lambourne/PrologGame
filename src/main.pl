@@ -208,7 +208,7 @@ do(investigate_breaker) :-
     option_doable(investigate_breaker),
     i_am_at(frontOfTheTram),
     write('You see a breaker attached to the drivers cabin.'),nl,
-    write('It looks like it is closed by some standard size 10 cross screws. You might want to take a picutre...'),nl.
+    write('It looks like it is closed by some standard size 10 cross screws. You might want to take a picutre...'),nl,!.
 
 % tramDriver talk
 
@@ -276,15 +276,15 @@ do(talk) :-
     i_am_at(middleOfTheTram),
     option_doable(talk_to_old_man),
     current_answer(oldMan),
-    write("..."), nl,
-    write("a: Do you know any mongolian?"), nl,
-    write("b: Do you have a screwdriver?"), !.
+    write('...'), nl,
+    write('a: Do you know any mongolian?'), nl,
+    write('b: Do you have a screwdriver?'), !.
 
 do(talk) :-
     i_am_at(middleOfTheTram),
     option_doable(talk_to_old_man),
     current_answer(haveScrewdriver),
-    write("үгүй."), !.
+    write('үгүй.'), !.
 
 do(talk) :-
     i_am_at(middleOfTheTram),
@@ -294,7 +294,7 @@ do(talk) :-
     (
         (
             has_picture_of_circuit,
-            write('a: Show him the picture of the circuit. "I\'m trying to fix the tram."')
+            write('a: Show him the picture of the circuit. \'I\'m trying to fix the tram.\'')
         ) ; (
             write('a: I don\'t know yet...'), nl
         )
@@ -304,9 +304,9 @@ do(talk) :-
     i_am_at(middleOfTheTram),
     option_doable(talk_to_student),
     current_answer(student),
-    write("..."), nl,
-    write("a: Do you have a screwdriver?"), nl,
-    write("b: Start gossiping about teachers"), !.
+    write('...'), nl,
+    write('a: Do you have a screwdriver?'), nl,
+    write('b: Start gossiping about teachers'), !.
 
 do(talk) :-
     i_am_at(middleOfTheTram),
@@ -323,17 +323,17 @@ do(talk) :-
     i_am_at(middleOfTheTram),
     option_doable(talk_to_student),
     current_answer(hasScrewdriver),
-    write("Yeah, what do you need it for?"), nl,
+    write('Yeah, what do you need it for?'), nl,
     (
         (
             has_picture_of_breaker,
-            write("a: Show him the picture of the breaker")
+            write('a: Show him the picture of the breaker')
         ) ; 
-        write("a: Take a picture of the breaker first.")
+        write('a: Take a picture of the breaker first.')
     ), nl, % TODO ONLY MAKE AVAIABLE IF HAVE PICTURE
     (
         said_lost_screwdriver ; 
-        write("b: I lost mine")
+        write('b: I lost mine')
     ), !.
 
 do(talk) :-
@@ -341,9 +341,9 @@ do(talk) :-
     option_doable(talk_to_student),
     current_answer(showPictureOfBreaker),
     has_picture_of_breaker,
-    write("Oh, I see. I can help you with that."), nl,
-    write("You can take mine for now, I stole it from the schools workshop anyways."), nl, nl,
-    write("You received a screwdriver!"), nl,
+    write('Oh, I see. I can help you with that.'), nl,
+    write('You can take mine for now, I stole it from the schools workshop anyways.'), nl, nl,
+    write('You received a screwdriver!'), nl,
     add_item(screwdriver),
     remove_option(talk_to_student),
     !.
@@ -352,65 +352,65 @@ do(talk) :-
     i_am_at(middleOfTheTram),
     option_doable(talk_to_student),
     current_answer(lostScrewdriver),
-    write("Well."), nl,
+    write('Well.'), nl,
     assert(said_lost_screwdriver),
-    write("I have one, but I'm not giving it to you. I guess you should've taken better care of yours!"), nl, !.
+    write('I have one, but I\'m not giving it to you. I guess you should\'ve taken better care of yours!'), nl, !.
 
 do(talk) :-
     i_am_at(middleOfTheTram),
     option_doable(talk_to_student),
     current_answer(startConvo),
-    write("Hey, what's up?"), nl,
-    write("Prof. K. is such a -"), nl, nl,
-    write("You talked too much and missed your train."),
+    write('Hey, what\'s up?'), nl,
+    write('Prof. K. is such a -'), nl, nl,
+    write('You talked too much and missed your train.'),
     game_over, !.
 
 do(talk) :-
     i_am_at(frontOfTheTram),
     option_doable(press_button),
     current_answer(button),
-    write("You can press a button or flip a lever, choose wisely..."), nl,
-    write("a: Press button E0"), nl,
-    write("b: Press button C1"), nl,
-    write("c: Press button A5"), nl,
-    write("d: Flip lever L0"), nl,
-    write("e: Press button H5"), nl,
-    write("f: Press button C9"), nl,
+    write('You can press a button or flip a lever, choose wisely...'), nl,
+    write('a: Press button E0'), nl,
+    write('b: Press button C1'), nl,
+    write('c: Press button A5'), nl,
+    write('d: Flip lever L0'), nl,
+    write('e: Press button H5'), nl,
+    write('f: Press button C9'), nl,
      !.
 
 do(talk) :-
     i_am_at(frontOfTheTram),
     option_doable(press_button),
     current_answer(openDoors),
-    write("You opened the doors. The tram driver files a report and you have to wait for him to finish the report."), nl,
+    write('You opened the doors. The tram driver files a report and you have to wait for him to finish the report.'), nl,
     game_over, !.
 
 do(talk) :-
     i_am_at(frontOfTheTram),
     option_doable(press_button),
     current_answer(pressBrake),
-    write("You pressed the emergency brake. The tram brakes are now broken and the tram driver files a report."), nl,
+    write('You pressed the emergency brake. The tram brakes are now broken and the tram driver files a report.'), nl,
     game_over, !.
 
 do(talk) :-
     i_am_at(frontOfTheTram),
     option_doable(press_button),
     current_answer(sendSos),
-    write("You pressed the SOS button. The emergency service is on the way. You have to wait for them to arrive and you pay a fien."), nl,
+    write('You pressed the SOS button. The emergency service is on the way. You have to wait for them to arrive and you pay a fien.'), nl,
     game_over, !.
 
 do(talk) :-
     i_am_at(frontOfTheTram),
     option_doable(press_button),
     current_answer(restorePower),
-    write("You restored the power. Wow, now to restarting the tram"), nl,
+    write('You restored the power. Wow, now to restarting the tram'), nl,
     assert(flipped_power_lever), !.
 
 do(talk) :-
     i_am_at(frontOfTheTram),
     option_doable(press_button),
     current_answer(explodeTram),
-    write("You blew up the tram causing a mass casualty. At leasst 40 people are estiamted dead. Your name will be in the historybooks for the clumsiest person to ever live."), nl,
+    write('You blew up the tram causing a mass casualty. At leasst 40 people are estiamted dead. Your name will be in the historybooks for the clumsiest person to ever live.'), nl,
     game_over, !.
 
 do(talk) :-
@@ -418,7 +418,10 @@ do(talk) :-
     option_doable(press_button),
     current_answer(restartTram),
     flipped_power_lever,
-    write("You restarted the tram. You'll catch your train!"), nl, !. % TODO ADD ENDING
+    write('You restarted the tram. The tram starts driving again!'), nl,
+    retract(i_am_at(_)),
+    assert(i_am_at(mainStation)),
+    look, !.
 
 do(_) :-
     write('You can\'t do that here!').
@@ -429,10 +432,10 @@ use(phone) :-
     (
         (
             has_picture_of_circuit,
-            write("You already took a picture of the circuit.")
+            write('You already took a picture of the circuit.')
         ) ; 
         (
-            write("You took a picture of the circuit. Might want to show it to someone..."),
+            write('You took a picture of the circuit. Might want to show it to someone...'),
             assert(has_picture_of_circuit)
         )
     )
@@ -442,28 +445,31 @@ use(phone) :-
     i_am_at(frontOfTheTram),
     (
         has_picture_of_breaker,
-        write("You already took a picture of the breaker.")
+        write('You already took a picture of the breaker.')
     ) ; (
-        write("You took a picture of the breaker. Might want to show it to someone..."),
+        write('You took a picture of the breaker. Might want to show it to someone...'),
         assert(has_picture_of_breaker)
     ),!.
 
 use(screwdriver) :-
-    i_am_at(fromntOfTheTram),
+    i_am_at(frontOfTheTram),
     (
         removed_breaker_cover,
-        write("You already took of the breaker cover.")
+        write('You already took of the breaker cover.')
     );(
-        write("You carefully take of the breakers cover. It reveals a complex circuit."),
+        write('You carefully take of the breakers cover. It reveals a complex circuit.'),
         assert(removed_breaker_cover),
-        assert(options(frontOfTheTram, [leave_tram, investigate_breaker, press_button])) % TODO change to concat
+        options(frontOfTheTram, Options),
+        retract(options(frontOfTheTram, Options)),
+        concat(Options, [press_button], NewOptions),
+        assert(options(frontOfTheTram, NewOptions)),
         draw_circuit_mongolian_broken,
-        write("The labels seem to be written in a foreign language. Hard to tell what button or lever is safe to be used."),nl,
-        write("Each button that looks useable seems to have a letter followed by a number as a label...")
+        write('The labels seem to be written in a foreign language. Hard to tell what button or lever is safe to be used.'),nl,
+        write('Each button that looks useable seems to have a letter followed by a number as a label...')
     ),!.
 
 use(screwdriver) :-
-    write("You can't use that here!"),!.
+    write('You can\'t use that here!'),!.
 
 use(circuit_translation) :-
     draw_circuit_english_broken, !.
@@ -497,21 +503,21 @@ use(_) :-
 
 game_over :-
     assert(game_over),
-    write("
+    write('
   _____                         ____                 
  / ____|                       / __ \\                
 | |  __  __ _ _ __ ___   ___  | |  | |_   _____ _ __ 
-| | |_ |/ _` | '_ ` _ \\ / _ \\ | |  | \\ \\ / / _ \\ '__|
+| | |_ |/ _` | \'_ ` _ \\ / _ \\ | |  | \\ \\ / / _ \\ \'__|
 | |__| | (_| | | | | | |  __/ | |__| |\\ V /  __/ |   
  \\_____|\\__,_|_| |_| |_|\\___|  \\____/  \\_/ \\___|_|   
                                                     
-    "),nl,
+    '),nl,
     write('You can restart the game by typing restart.'),nl, !.
 
 draw_circuit_mongolian_broken :-
         i_am_at(frontOfTheTram),
         removed_breaker_cover,
-        write("
+        write('
  ┌─────────────────────────────────────────────────────────────────────────────────────────────┐
  │                                                                                             │
  │                                                                                             │
@@ -552,12 +558,12 @@ draw_circuit_mongolian_broken :-
  │                                                                      трамвайг дахин эхлүүлэх│
  │                                                                                             │
  └─────────────────────────────────────────────────────────────────────────────────────────────┘
-    "),nl, !.
+    '),nl, !.
 
 draw_circuit_mongolian_fixed :-
         i_am_at(frontOfTheTram),
         removed_breaker_cover,
-        write("
+        write('
  ┌─────────────────────────────────────────────────────────────────────────────────────────────┐
  │                                                                                             │
  │                                                                                             │
@@ -598,10 +604,10 @@ draw_circuit_mongolian_fixed :-
  │                                                                      трамвайг дахин эхлүүлэх│
  │                                                                                             │
  └─────────────────────────────────────────────────────────────────────────────────────────────┘
-        "),nl, !.
+        '),nl, !.
 
 draw_circuit_english_broken :-
-        write("
+        write('
  ┌─────────────────────────────────────────────────────────────────────────────────────────────┐
  │                                                                                             │
  │                                                                                             │
@@ -642,7 +648,7 @@ draw_circuit_english_broken :-
  │                                                                             restart tram    │
  │                                                                                             │
  └─────────────────────────────────────────────────────────────────────────────────────────────┘
-        "),nl, !.
+        '),nl, !.
 
 inventory :- 
     inventory(Items),
